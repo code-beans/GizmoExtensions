@@ -32,12 +32,12 @@ namespace Utils {
 		}
 
 		public static void DrawArrow(Vector3 from, Vector3 to, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f, Quaternion rotation = default(Quaternion)) {
-			DrawLine(from,to);
+			DrawLine(from,to, rotation);
 			var direction = to - from;
 			var right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
 			var left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-			DrawLine(to,to + right * arrowHeadLength);
-			DrawLine(to, to + left * arrowHeadLength);
+			DrawLine(to,to + right * arrowHeadLength, rotation);
+			DrawLine(to, to + left * arrowHeadLength, rotation);
 		}
 
 
@@ -47,9 +47,9 @@ namespace Utils {
 			var verts = mesh.vertices.Select(v => Vector3.Scale(v, scale) + position).ToList();
 			var tris = mesh.triangles;
 			for (var i = 0; i < tris.Length - 3; i += 3) {
-				DrawLine(verts[tris[i]], verts[tris[i + 1]]);
-				DrawLine(verts[tris[i + 1]], verts[tris[i + 2]]);
-				DrawLine(verts[tris[i]], verts[tris[i + 2]]);
+				DrawLine(verts[tris[i]], verts[tris[i + 1]], rotation);
+				DrawLine(verts[tris[i + 1]], verts[tris[i + 2]], rotation);
+				DrawLine(verts[tris[i]], verts[tris[i + 2]], rotation);
 			}
 		}
 
@@ -65,9 +65,9 @@ namespace Utils {
 				var newY = new Vector3(position.x + radius * Mathf.Cos(angle * i * Mathf.Deg2Rad), position.y, position.z + radius * Mathf.Sin(angle * i * Mathf.Deg2Rad));
 				var newZ = new Vector3(position.x + radius * Mathf.Cos(angle * i * Mathf.Deg2Rad), position.y + radius * Mathf.Sin(angle * i * Mathf.Deg2Rad), position.z);
 
-				Gizmos.DrawLine(x, newX);
-				Gizmos.DrawLine(y, newY);
-				Gizmos.DrawLine(z, newZ);
+				DrawLine(x, newX, rotation);
+				Gizmos.DrawLine(y, newY, rotation);
+				Gizmos.DrawLine(z, newZ, rotation);
 
 				x = newX;
 				y = newY;
