@@ -1,7 +1,7 @@
 # GizmoExtensions
 Utility class(es) that extend Unity's Gizmos
 
-![](gizmos.png)
+![](gif.gif)
 
 
 ## Install
