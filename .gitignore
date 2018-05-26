@@ -35,4 +35,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+*.meta
+
 gif.gif

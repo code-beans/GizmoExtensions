@@ -16,5 +16,7 @@ Utility class(es) that extend Unity's Gizmos
 ## Install
 Just drop the `/src` folder into your Unity Assets
 
+if you want to keep up to date you might want to clone the repo into your `Assets/` folder instead
+
 ## Contribute
 Do you have any Gizmo extensions? Feel free to contribute!
