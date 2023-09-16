@@ -57,22 +57,27 @@ namespace Utils {
 	    /// <param name="angle">angle in degrees</param>
 	    /// <param name="segments">number of segments</param>
 	    /// <param name="rotation">rotation around the center</param>
-	    public static void DrawWireArc(Vector3 center, float radius, float angle, int segments = 20, Quaternion rotation = default(Quaternion))
-		{
-			
-			var old = Gizmos.matrix;
-		
-			Gizmos.matrix = Matrix4x4.TRS(center,rotation,Vector3.one);
-			Vector3 from = Vector3.forward * radius;
-			var step = Mathf.RoundToInt(angle / segments);
-			for (int i = 0; i <= angle; i += step) {
-				var to = new Vector3(radius * Mathf.Sin(i * Mathf.Deg2Rad), 0, radius * Mathf.Cos(i * Mathf.Deg2Rad));
-				Gizmos.DrawLine(from, to);
-				from = to;
-			}
+	    public static void DrawWireArc(Vector3 center, float radius, float angle, int segments = 20,
+		    Quaternion rotation = default(Quaternion))
+	    {
+		    var old = Gizmos.matrix;
 
-			Gizmos.matrix = old;
-		}
+		    // Check if the rotation is the default Quaternion (identity), and if so, set it to Quaternion.identity
+		    if (rotation.Equals(default(Quaternion)))
+			    rotation = Quaternion.identity;
+
+		    Gizmos.matrix = Matrix4x4.TRS(center, rotation, Vector3.one);
+		    Vector3 from = Vector3.forward * radius;
+		    var step = Mathf.RoundToInt(angle / segments);
+		    for (int i = 0; i <= angle; i += step)
+		    {
+			    var to = new Vector3(radius * Mathf.Sin(i * Mathf.Deg2Rad), 0, radius * Mathf.Cos(i * Mathf.Deg2Rad));
+			    Gizmos.DrawLine(from, to);
+			    from = to;
+		    }
+
+		    Gizmos.matrix = old;
+	    }
 
 
 		/// <summary>
