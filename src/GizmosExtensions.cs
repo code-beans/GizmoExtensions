@@ -193,5 +193,71 @@ namespace Utils {
 
 		}
 
+        /// <summary>
+        /// Draws a visualization for Physics.BoxCast
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="halfExtents"></param>
+        /// <param name="direction"></param>
+        /// <param name="orientation"></param>
+        /// <param name="maxDistance"></param>
+        /// <param name="showCast"></param>
+        public static void DrawBoxCast(
+            Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation, float maxDistance, bool showCast = false)
+        {
+            DrawBoxCast(center, center + direction * maxDistance, 2 * halfExtents, orientation, Physics.DefaultRaycastLayers, showCast);
+        }
+        
+        /// <summary>
+        /// Draws a visualization for Physics.BoxCast
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="halfExtents"></param>
+        /// <param name="direction"></param>
+        /// <param name="orientation"></param>
+        /// <param name="maxDistance"></param>
+        /// <param name="layerMask"></param>
+        /// <param name="showCast"></param>
+        public static void DrawBoxCast(
+            Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation, float maxDistance, int layerMask, bool showCast)
+        {
+            // calculate vars
+            Color gizmosColor = Gizmos.color;
+            Vector3 end = center + direction * maxDistance;
+            Vector3 halfExtentsZ = orientation * Vector3.forward * halfExtents.z;
+            Vector3 halfExtentsY = orientation * Vector3.up * halfExtents.y;
+            Vector3 halfExtentsX = orientation * Vector3.right * halfExtents.x;
+
+            // change color and draw hitmarker if show BoxCast 
+            if (showCast && Physics.BoxCast(center, halfExtents, direction, out RaycastHit hitInfo, orientation, maxDistance, layerMask))
+            {
+                Gizmos.color = Gizmos.color == Color.red ? Color.magenta : Color.red;
+                Gizmos.DrawWireCube(hitInfo.point, 0.25f * Vector3.one);
+            }
+            
+            // draw boxes
+            Matrix4x4 matrix = Gizmos.matrix;
+            Gizmos.matrix = Matrix4x4.TRS(center, orientation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, 2 * halfExtents);
+            Gizmos.matrix = Matrix4x4.TRS(end, orientation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, 2 * halfExtents);
+            Gizmos.matrix = matrix;
+                
+            // draw connect lines 1
+            Gizmos.DrawLine(center - halfExtentsX - halfExtentsY - halfExtentsZ, end - halfExtentsX - halfExtentsY - halfExtentsZ);
+            Gizmos.DrawLine(center + halfExtentsX - halfExtentsY - halfExtentsZ, end + halfExtentsX - halfExtentsY - halfExtentsZ);
+            Gizmos.DrawLine(center - halfExtentsX + halfExtentsY - halfExtentsZ, end - halfExtentsX + halfExtentsY - halfExtentsZ);
+            Gizmos.DrawLine(center + halfExtentsX + halfExtentsY - halfExtentsZ, end + halfExtentsX + halfExtentsY - halfExtentsZ);
+
+            // draw connect lines 2
+            Gizmos.DrawLine(center - halfExtentsX - halfExtentsY + halfExtentsZ, end - halfExtentsX - halfExtentsY + halfExtentsZ);
+            Gizmos.DrawLine(center + halfExtentsX - halfExtentsY + halfExtentsZ, end + halfExtentsX - halfExtentsY + halfExtentsZ);
+            Gizmos.DrawLine(center - halfExtentsX + halfExtentsY + halfExtentsZ, end - halfExtentsX + halfExtentsY + halfExtentsZ);
+            Gizmos.DrawLine(center + halfExtentsX + halfExtentsY + halfExtentsZ, end + halfExtentsX + halfExtentsY + halfExtentsZ);
+
+            // reset color
+            Gizmos.color = gizmosColor;
+        }
+
 	}
 }
