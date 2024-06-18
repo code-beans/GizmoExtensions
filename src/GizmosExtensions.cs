@@ -205,7 +205,7 @@ namespace Utils {
         public static void DrawBoxCast(
             Vector3 center, Vector3 halfExtents, Vector3 direction, Quaternion orientation, float maxDistance, bool showCast = false)
         {
-            DrawBoxCast(center, center + direction * maxDistance, 2 * halfExtents, orientation, Physics.DefaultRaycastLayers, showCast);
+            DrawBoxCast(center, halfExtents, direction, orientation, maxDistance, Physics.DefaultRaycastLayers, showCast);
         }
         
         /// <summary>
